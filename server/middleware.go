@@ -15,16 +15,17 @@ func (s *server) registerMiddleware() {
 	s.router.Use(middleware.StripSlashes)
 
 	// TODO: Add some kind of rate limiting (uber)
-	// TODO: Add CORS (rs/cors)
+	// TODO: Add CORS (rs/cors) https://github.com/rs/cors/blob/master/examples/chi/server.go
 	// TODO: Add CSRF protection
-	// TODO: Add security headers (rs/secure)
+	// TODO: Add security headers (unrolled/secure)
 	// TODO: Add compression
 	// TODO: Add double slash removal
 	// TODO: Add trailing slash removal
 	// TODO: Add request timeout from
 
-	// TODO: use charmbracelet/log middleware
+	// TODO: use charmbracelet/log or rs/zerolog middleware
 	// Log every incoming request
+	// Log middleware depends on Recover
 	s.router.Use(middleware.Logger)
 	// A panic should not quit the program
 	s.router.Use(middleware.Recoverer)

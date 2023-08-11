@@ -27,7 +27,7 @@ func NewServeCommand(logger *log.Logger) *cobra.Command {
 				return err
 			}
 
-			srv := server.New(logger, db)
+			srv := server.New(db)
 
 			logger.Infof("Starting server on %s", addr)
 			if err := http.ListenAndServe(addr, srv); err != nil && !errors.Is(err, http.ErrServerClosed) {

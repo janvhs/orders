@@ -3,7 +3,6 @@ package server
 import (
 	"net/http"
 
-	"github.com/charmbracelet/log"
 	"github.com/go-chi/chi"
 	"github.com/jmoiron/sqlx"
 )
@@ -11,16 +10,14 @@ import (
 var _ http.Handler = (*server)(nil)
 
 type server struct {
-	logger *log.Logger
 	router chi.Router
 	db     *sqlx.DB
 }
 
-func New(logger *log.Logger, db *sqlx.DB) *server {
+func New(db *sqlx.DB) *server {
 	r := chi.NewRouter()
 
 	srv := &server{
-		logger: logger,
 		router: r,
 		db:     db,
 	}
