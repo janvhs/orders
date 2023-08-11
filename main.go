@@ -41,7 +41,9 @@ func main() {
 
 	app := cmd.New(AppName, Version, CommitSHA)
 
-	app.AddCommand()
+	app.AddCommand(
+		cmd.NewServeCommand(logger),
+	)
 
 	err := app.Execute()
 	if err != nil {
