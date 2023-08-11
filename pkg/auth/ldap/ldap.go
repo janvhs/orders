@@ -60,11 +60,12 @@ func (l *authenticator) AuthenticateUser(username, password string) (bool, error
 	}
 
 	err = l.conn.Bind(user.DN, password)
-	if err != nil {
-		return false, err
-	} else {
+	// INFO: ATTENTION this is a check for POSITIVE nil-equality
+	if err == nil {
 		return true, nil
 	}
+
+	return false, err
 }
 
 // Private Methods
