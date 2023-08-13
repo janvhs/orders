@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	// FIXME: This kind of doesn't override, when building with -ldflags
 	defaultVersion = "unknown (built from source)"
 	defaultAppName = "app"
 
@@ -22,11 +23,11 @@ var (
 
 func setMetaDefaults() {
 	if info, ok := debug.ReadBuildInfo(); ok {
-		if Version == defaultVersion && info.Main.Sum != "" {
+		if (Version == defaultVersion || Version == "") && info.Main.Sum != "" {
 			Version = info.Main.Version
 		}
 
-		if AppName == defaultAppName && info.Main.Path != "" {
+		if (AppName == defaultAppName || AppName == "") && info.Main.Path != "" {
 			AppName = path.Base(path.Clean(info.Main.Path))
 		}
 	}
@@ -43,6 +44,7 @@ func main() {
 
 	app.AddCommand(
 		cmd.NewServeCommand(logger),
+		cmd.NewMigrateCommand(),
 	)
 
 	err := app.Execute()
