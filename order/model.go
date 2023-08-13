@@ -1,29 +1,27 @@
 package order
 
 import (
+	"database/sql"
 	"time"
-
-	"git.bode.fun/orders/article"
 )
 
-type State = int
+type State = int64
 
 const (
-	Open State = iota
-	Ordered
-	Rejected
+	Open     State = 0
+	Ordered  State = 1
+	Rejected State = 2
 )
 
 type Order struct {
 	ID int64
 
-	State     State
-	Until     time.Time
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt time.Time
+	State State
+	// TODO: Move to article?
+	Until     sql.NullTime
+	CreatedAt time.Time    `db:"created_at"`
+	UpdatedAt time.Time    `db:"updated_at"`
+	DeletedAt sql.NullTime `db:"deleted_at"`
 
-	// TODO: Replace with User
-	Author   string
-	Articles []article.Article
+	AuthorID int64 `db:"author_id"`
 }

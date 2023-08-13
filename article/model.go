@@ -1,11 +1,16 @@
 package article
 
-type State = int
+import (
+	"database/sql"
+	"time"
+)
+
+type State = int64
 
 const (
-	Open State = iota
-	Ordered
-	Rejected
+	Open     State = 0
+	Ordered  State = 1
+	Rejected State = 2
 )
 
 type Article struct {
@@ -15,9 +20,15 @@ type Article struct {
 	Amount     int64
 	URL        string
 	Price      float64
-	CostCentre string
-	Status     State
+	CostCentre string `db:"cost_centre"`
+	State      State
 
-	// TODO: Replace with User / Abteilung
-	For string
+	OrderID int64 `db:"order_id"`
+
+	AutorID   int64 `db:"author_id"`
+	ForUserID int64 `db:"for_user_id"`
+
+	CreatedAt time.Time `db:"created_at"`
+	UpdatedAt time.Time `db:"updated_at"`
+	DeletedAt sql.NullTime `db:"deleted_at"`
 }
