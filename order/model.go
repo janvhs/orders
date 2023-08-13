@@ -17,11 +17,11 @@ const (
 type Order struct {
 	ID int64
 
-	State         State
-	Until         time.Time
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
-	SoftlyDeleted bool
+	State     State
+	Until     time.Time
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt time.Time
 
 	// TODO: Replace with User
 	Author   string
