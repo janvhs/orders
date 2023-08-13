@@ -19,9 +19,17 @@ func handleIndexOrder(db *sqlx.DB) http.HandlerFunc {
 		// Create request specific Repository and Service
 		repo := NewRepo(db)
 		serv := NewService(repo)
-
+		orders, err := serv.ListAll()
+		
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		
+		if err != nil {
+			w.WriteHeader(500)
+			fmt.Fprintln(w, err)
+			return
+		}
+
 		w.WriteHeader(200)
-		fmt.Fprintln(w, serv.ListAll())
+		fmt.Fprintln(w, orders)
 	}
 }

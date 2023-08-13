@@ -1,7 +1,8 @@
+// TODO: Currently, having a service layer feels unnecessary.
 package order
 
 type Service interface {
-	ListAll() []Order
+	ListAll() ([]Order, error)
 }
 
 // Implementation
@@ -22,6 +23,6 @@ func NewService(repo Repo) *service {
 // Public Methods
 // ------------------------------------------------------------------------
 
-func (s *service) ListAll() []Order {
+func (s *service) ListAll() ([]Order, error) {
 	return s.repo.GetAll()
 }

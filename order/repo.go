@@ -8,7 +8,7 @@ import (
 // ------------------------------------------------------------------------
 
 type Repo interface {
-	GetAll() []Order
+	GetAll() ([]Order, error)
 }
 
 // Main implementation
@@ -29,7 +29,9 @@ func NewRepo(db *sqlx.DB) *sqlRepo {
 // Public Methods
 // ------------------------------------------------------------------------
 
-func (r *sqlRepo) GetAll() []Order {
+func (r *sqlRepo) GetAll() ([]Order, error) {
 	// FIXME: Return an actual value
-	return
+	var orders []Order
+	err := r.db.Select(&orders, "SELECT * FROM orders")
+	return orders, err
 }
