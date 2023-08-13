@@ -5,10 +5,9 @@ import (
 	"net/http"
 	"time"
 
+	"git.bode.fun/orders/db"
 	"git.bode.fun/orders/server"
 	"github.com/charmbracelet/log"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/mattn/go-sqlite3" // FIXME: Move to modernc.org/sqlite
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +22,7 @@ func NewServeCommand(logger *log.Logger) *cobra.Command {
 				return err
 			}
 
-			db, err := sqlx.Connect("sqlite3", ":memory:")
+			db, err := db.Connect()
 			if err != nil {
 				return err
 			}
