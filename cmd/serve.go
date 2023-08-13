@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"git.bode.fun/orders/server"
 	"github.com/charmbracelet/log"
@@ -27,10 +28,19 @@ func NewServeCommand(logger *log.Logger) *cobra.Command {
 				return err
 			}
 
-			srv := server.New(db)
+			handler := server.New(db)
+
+			// TODO: find a good value for the timeouts.
+			// Fixes gosec issue G114
+			srv := &http.Server{
+				Addr:         addr,
+				Handler:      handler,
+				ReadTimeout:  10 * time.Second,
+				WriteTimeout: 10 * time.Second,
+			}
 
 			logger.Infof("Starting server on %s", addr)
-			if err := http.ListenAndServe(addr, srv); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 				return err
 			}
 
