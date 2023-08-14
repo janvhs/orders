@@ -3,6 +3,7 @@ module git.bode.fun/orders
 go 1.20
 
 require (
+	github.com/caarlos0/env/v6 v6.10.1
 	github.com/charmbracelet/log v0.2.3
 	github.com/go-chi/chi v1.5.4
 	github.com/go-ldap/ldap/v3 v3.4.5
