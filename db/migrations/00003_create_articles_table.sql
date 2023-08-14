@@ -3,12 +3,14 @@
 -- +goose Up
 CREATE TABLE articles (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    
     name TEXT NOT NULL,
     amount INTEGER NOT NULL,
     url TEXT NOT NULL,
     price REAL NOT NULL,
     cost_centre TEXT NOT NULL,
     state INTEGER NOT NULL DEFAULT 0,
+    until DATETIME DEFAULT NULL,
 
     order_id INTEGER NOT NULL,
     author_id INTEGER NOT NULL,
