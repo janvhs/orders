@@ -2,12 +2,7 @@ package db
 
 import "github.com/jmoiron/sqlx"
 
-func Seed() error {
-	db, err := open()
-	if err != nil {
-		return err
-	}
-
+func Seed(db *sqlx.DB) error {
 	if err := seedUsers(db); err != nil {
 		return err
 	}

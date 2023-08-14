@@ -5,7 +5,6 @@ package db
 import (
 	"database/sql"
 	"embed"
-	"sync"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/pressly/goose/v3"
@@ -15,21 +14,14 @@ import (
 const (
 	driverName string = "sqlite"
 	dialect    string = "sqlite"
-	file       string = "db.sqlite"
 )
-
-var db *sql.DB
-var dbOnce sync.Once
 
 //go:embed migrations/*.sql
 var migrationsFs embed.FS
 var migrationDir string = "migrations"
 
-func open() (*sqlx.DB, error) {
-	var err error
-	dbOnce.Do(func() {
-		db, err = sql.Open(driverName, file)
-	})
+func Connect(dsn string) (*sqlx.DB, error) {
+	db, err := sql.Open(driverName, dsn)
 
 	if err != nil {
 		return nil, err
@@ -38,23 +30,14 @@ func open() (*sqlx.DB, error) {
 	return sqlx.NewDb(db, driverName), nil
 }
 
-func Connect() (*sqlx.DB, error) {
-	return open()
-}
-
-func Migrate() error {
-	db, err := open()
-	if err != nil {
-		return err
-	}
-
+func Migrate(db *sql.DB) error {
 	goose.SetBaseFS(migrationsFs)
 
 	if err := goose.SetDialect(dialect); err != nil {
 		return err
 	}
 
-	if err := goose.Up(db.DB, migrationDir); err != nil {
+	if err := goose.Up(db, migrationDir); err != nil {
 		return err
 	}
 
