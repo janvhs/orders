@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	"git.bode.fun/orders/db"
+	"git.bode.fun/orders/config"
+	odb "git.bode.fun/orders/db"
 	"github.com/spf13/cobra"
 )
 
@@ -10,18 +11,28 @@ func NewMigrateCommand() *cobra.Command {
 		Use:   "migrate",
 		Short: "Migrate the database",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			cnf, err := config.NewFromEnv()
+			if err != nil {
+				return err
+			}
+
 			shouldSeed, err := cmd.Flags().GetBool("seed")
 			if err != nil {
 				return err
 			}
 
-			err = db.Migrate()
+			db, err := odb.Connect(cnf.DB.DSN)
+			if err != nil {
+				return err
+			}
+
+			err = odb.Migrate(db.DB)
 			if err != nil {
 				return err
 			}
 
 			if shouldSeed {
-				err = db.Seed()
+				err = odb.Seed(db)
 				if err != nil {
 					return err
 				}

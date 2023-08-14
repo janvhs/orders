@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
+	"git.bode.fun/orders/config"
 	"git.bode.fun/orders/db"
 	"git.bode.fun/orders/server"
 	"github.com/charmbracelet/log"
@@ -17,16 +19,29 @@ func NewServeCommand(logger *log.Logger) *cobra.Command {
 		Short: "Start the server",
 		RunE: func(cmd *cobra.Command, args []string) error {
 
-			addr, err := cmd.Flags().GetString("addr")
+			cnf, err := config.NewFromEnv()
 			if err != nil {
 				return err
 			}
 
-			db, err := db.Connect()
+			host, err := cmd.Flags().GetString("host")
+			if err != nil {
+				return err
+			}
+			cnf.Server.Host = host
+
+			port, err := cmd.Flags().GetInt("port")
+			if err != nil {
+				return err
+			}
+			cnf.Server.Port = port
+
+			db, err := db.Connect(cnf.DB.DSN)
 			if err != nil {
 				return err
 			}
 
+			addr := fmt.Sprintf("%s:%d", cnf.Server.Host, cnf.Server.Port)
 			handler := server.New(db)
 
 			// TODO: find a good value for the timeouts.
@@ -47,7 +62,10 @@ func NewServeCommand(logger *log.Logger) *cobra.Command {
 		},
 	}
 
-	command.Flags().StringP("addr", "a", "127.0.0.1:8080", "Address to listen on")
+	defaultCnf := config.Default()
+
+	command.Flags().String("host", defaultCnf.Server.Host, "Host to listen on")
+	command.Flags().IntP("port", "p", defaultCnf.Server.Port, "Port to listen on")
 
 	return command
 }
