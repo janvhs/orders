@@ -35,13 +35,13 @@ type Authenticator struct {
 }
 
 // TODO: Remove constructor?
-func New(addr, baseDN, filterf, superUserDN, password string) (*Authenticator, error) {
+func New(addr, baseDN, filterf, bindDN, bindPassword string) (*Authenticator, error) {
 	conn, err := connect(addr)
 	if err != nil {
 		return nil, err
 	}
 
-	err = bind(conn, superUserDN, password)
+	err = bind(conn, bindDN, bindPassword)
 	if err != nil {
 		return nil, err
 	}
