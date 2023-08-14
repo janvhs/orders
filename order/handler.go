@@ -1,27 +1,30 @@
 package order
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi"
-	"github.com/jmoiron/sqlx"
+	"github.com/uptrace/bun"
 )
 
-func RegisterHandlers(db *sqlx.DB) func(r chi.Router) {
+func RegisterHandlers(db *bun.DB) func(r chi.Router) {
 	return func(r chi.Router) {
 		r.Get("/", handleIndexOrder(db))
 	}
 }
 
-func handleIndexOrder(db *sqlx.DB) http.HandlerFunc {
+func handleIndexOrder(db *bun.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Create request specific Repository and Service
 		repo := NewRepo(db)
 		serv := NewService(repo)
 		orders, err := serv.ListAll()
 
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		jencode := json.NewEncoder(w)
+
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 
 		if err != nil {
 			w.WriteHeader(500)
@@ -30,6 +33,6 @@ func handleIndexOrder(db *sqlx.DB) http.HandlerFunc {
 		}
 
 		w.WriteHeader(200)
-		fmt.Fprintln(w, orders)
+		jencode.Encode(orders)
 	}
 }
