@@ -2,6 +2,7 @@ package config
 
 func Default() Config {
 	return Config{
+		Debug: false,
 		DB: DB{
 			DSN: "orders.db",
 		},

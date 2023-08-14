@@ -24,5 +24,5 @@ func NewService(repo Repo) *service {
 // ------------------------------------------------------------------------
 
 func (s *service) ListAll() ([]Order, error) {
-	return s.repo.GetAll()
+	return s.repo.GetAllRel()
 }

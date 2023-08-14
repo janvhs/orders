@@ -1,14 +1,16 @@
 package order
 
 import (
-	"github.com/jmoiron/sqlx"
+	"context"
+
+	"github.com/uptrace/bun"
 )
 
 // Interface Abstraction
 // ------------------------------------------------------------------------
 
 type Repo interface {
-	GetAll() ([]Order, error)
+	GetAllRel() ([]Order, error)
 }
 
 // Main implementation
@@ -17,10 +19,10 @@ type Repo interface {
 var _ Repo = (*sqlRepo)(nil)
 
 type sqlRepo struct {
-	db sqlx.DB
+	db bun.DB
 }
 
-func NewRepo(db *sqlx.DB) *sqlRepo {
+func NewRepo(db *bun.DB) *sqlRepo {
 	return &sqlRepo{
 		db: *db,
 	}
@@ -29,9 +31,13 @@ func NewRepo(db *sqlx.DB) *sqlRepo {
 // Public Methods
 // ------------------------------------------------------------------------
 
-func (r *sqlRepo) GetAll() ([]Order, error) {
+func (r *sqlRepo) GetAllRel() ([]Order, error) {
 	// FIXME: Return an actual value
 	var orders []Order
-	err := r.db.Select(&orders, "SELECT * FROM orders")
+	err := r.db.NewSelect().
+		Model(&orders).
+		Relation("Author").
+		Scan(context.TODO())
+
 	return orders, err
 }

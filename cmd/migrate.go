@@ -21,7 +21,7 @@ func NewMigrateCommand() *cobra.Command {
 				return err
 			}
 
-			db, err := odb.Connect(cnf.DB.DSN)
+			db, err := odb.Connect(cnf.DB.DSN, cnf.Debug)
 			if err != nil {
 				return err
 			}

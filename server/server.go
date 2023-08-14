@@ -4,17 +4,17 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
-	"github.com/jmoiron/sqlx"
+	"github.com/uptrace/bun"
 )
 
 var _ http.Handler = (*server)(nil)
 
 type server struct {
 	router chi.Router
-	db     *sqlx.DB
+	db     *bun.DB
 }
 
-func New(db *sqlx.DB) *server {
+func New(db *bun.DB) *server {
 	r := chi.NewRouter()
 
 	srv := &server{

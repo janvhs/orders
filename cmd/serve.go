@@ -36,7 +36,7 @@ func NewServeCommand(logger *log.Logger) *cobra.Command {
 			}
 			cnf.Server.Port = port
 
-			db, err := db.Connect(cnf.DB.DSN)
+			db, err := db.Connect(cnf.DB.DSN, cnf.Debug)
 			if err != nil {
 				return err
 			}

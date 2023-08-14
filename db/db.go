@@ -6,8 +6,10 @@ import (
 	"database/sql"
 	"embed"
 
-	"github.com/jmoiron/sqlx"
 	"github.com/pressly/goose/v3"
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/sqlitedialect"
+	"github.com/uptrace/bun/extra/bundebug"
 	_ "modernc.org/sqlite"
 )
 
@@ -20,14 +22,27 @@ const (
 var migrationsFs embed.FS
 var migrationDir string = "migrations"
 
-func Connect(dsn string) (*sqlx.DB, error) {
+func Connect(dsn string, isDebug bool) (*bun.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return sqlx.NewDb(db, driverName), nil
+	bunDb := bun.NewDB(db, sqlitedialect.New())
+
+	if isDebug {
+		bunDb.AddQueryHook(bundebug.NewQueryHook(
+			bundebug.WithVerbose(true),
+			bundebug.WithEnabled(true),
+		))
+	}
+
+	if err := bunDb.Ping(); err != nil {
+		return nil, err
+	}
+
+	return bunDb, nil
 }
 
 func Migrate(db *sql.DB) error {

@@ -20,6 +20,7 @@ type LDAP struct {
 }
 
 type Config struct {
+	Debug  bool `env:"DEBUG"`
 	DB     DB
 	Server Server
 	LDAP   LDAP
