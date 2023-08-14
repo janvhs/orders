@@ -1,0 +1,10 @@
+# Artefacts
+orders
+orders.exe
+orders.db
+
+# OS-specific
+.DS_Store
+
+# private files
+run.sh
