@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"os"
 	"path"
 	"runtime/debug"
@@ -20,6 +21,9 @@ var (
 	Vendor    = "fun.bode"
 	CommitSHA = ""
 )
+
+//go:embed web/templates/*.html web/templates/layouts/*.html
+var templateFS embed.FS
 
 func setMetaDefaults() {
 	if info, ok := debug.ReadBuildInfo(); ok {
@@ -43,7 +47,7 @@ func main() {
 	app := cmd.New(AppName, Version, CommitSHA)
 
 	app.AddCommand(
-		cmd.NewServeCommand(logger),
+		cmd.NewServeCommand(logger, templateFS),
 		cmd.NewMigrateCommand(),
 	)
 

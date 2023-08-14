@@ -9,6 +9,7 @@ require (
 	github.com/go-ldap/ldap/v3 v3.4.5
 	github.com/pressly/goose/v3 v3.15.0
 	github.com/spf13/cobra v1.7.0
+	github.com/unrolled/render v1.6.0
 	github.com/uptrace/bun v1.1.14
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.14
 	github.com/uptrace/bun/extra/bundebug v1.1.14
@@ -21,6 +22,7 @@ require (
 	github.com/charmbracelet/lipgloss v0.7.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fatih/color v1.15.0 // indirect
+	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.4 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
