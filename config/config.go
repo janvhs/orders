@@ -20,10 +20,10 @@ type LDAP struct {
 }
 
 type Config struct {
-	Debug  bool `env:"DEBUG"`
-	DB     DB
-	Server Server
-	LDAP   LDAP
+	IsDevelopment bool `env:"DEV"`
+	DB            DB
+	Server        Server
+	LDAP          LDAP
 }
 
 func NewFromEnv() (Config, error) {

@@ -22,7 +22,7 @@ const (
 var migrationsFs embed.FS
 var migrationDir string = "migrations"
 
-func Connect(dsn string, isDebug bool) (*bun.DB, error) {
+func Connect(dsn string, isDevelopment bool) (*bun.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 
 	if err != nil {
@@ -31,7 +31,7 @@ func Connect(dsn string, isDebug bool) (*bun.DB, error) {
 
 	bunDb := bun.NewDB(db, sqlitedialect.New())
 
-	if isDebug {
+	if isDevelopment {
 		bunDb.AddQueryHook(bundebug.NewQueryHook(
 			bundebug.WithVerbose(true),
 			bundebug.WithEnabled(true),
