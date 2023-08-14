@@ -28,7 +28,7 @@ type Article struct {
 	AutorID   int64 `db:"author_id"`
 	ForUserID int64 `db:"for_user_id"`
 
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
+	CreatedAt time.Time    `db:"created_at"`
+	UpdatedAt time.Time    `db:"updated_at"`
 	DeletedAt sql.NullTime `db:"deleted_at"`
 }
