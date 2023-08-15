@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"git.bode.fun/orders/config"
-	"git.bode.fun/orders/db"
+	"git.bode.fun/orders/internal/config"
+	"git.bode.fun/orders/internal/db"
 	"git.bode.fun/orders/server"
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"

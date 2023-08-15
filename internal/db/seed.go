@@ -3,7 +3,7 @@ package db
 import (
 	"context"
 
-	"git.bode.fun/orders/db/entity"
+	"git.bode.fun/orders/internal/db/entity"
 	"github.com/uptrace/bun"
 )
 

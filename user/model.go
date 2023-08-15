@@ -1,5 +1,5 @@
 package user
 
-import "git.bode.fun/orders/db/entity"
+import "git.bode.fun/orders/internal/db/entity"
 
 type User = entity.User

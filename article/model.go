@@ -1,6 +1,6 @@
 package article
 
-import "git.bode.fun/orders/db/entity"
+import "git.bode.fun/orders/internal/db/entity"
 
 type Article = entity.Article
 

@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"git.bode.fun/orders/config"
-	odb "git.bode.fun/orders/db"
+	"git.bode.fun/orders/internal/config"
+	odb "git.bode.fun/orders/internal/db"
 	"github.com/spf13/cobra"
 )
 

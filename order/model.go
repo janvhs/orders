@@ -1,6 +1,6 @@
 package order
 
-import "git.bode.fun/orders/db/entity"
+import "git.bode.fun/orders/internal/db/entity"
 
 type State = entity.OrderState
 
