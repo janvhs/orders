@@ -4,12 +4,15 @@ import (
 	"embed"
 	"net/http"
 
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	"github.com/unrolled/render"
 	"github.com/uptrace/bun"
 )
 
 var _ http.Handler = (*server)(nil)
+
+// Implementation
+// ------------------------------------------------------------------------
 
 type server struct {
 	isDevelopment bool
@@ -22,16 +25,21 @@ type server struct {
 func New(db *bun.DB, isDevelopment bool, templateFS, staticFS embed.FS) *server {
 	r := chi.NewRouter()
 
+	var renderFS render.FileSystem = &render.EmbedFileSystem{
+		FS: templateFS,
+	}
+
+	if isDevelopment {
+		renderFS = &render.LocalFileSystem{}
+	}
+
 	// TODO: Remove render, because it seems to be an unnecessary dependency
 	renderer := render.New(render.Options{
 		IsDevelopment: isDevelopment,
 		Layout:        "layouts/index",
 		Directory:     "web/templates",
 		Extensions:    []string{".html"}, // "go.html" or "tmpl.html", sadly do not work
-		FileSystem: &render.EmbedFileSystem{
-			FS: templateFS,
-		},
-		UseMutexLock: true, // Im scared of data-races and do not want to create the renderer for each request
+		FileSystem:    renderFS,
 		// FIXME: If https://github.com/Masterminds/sprig is needed, add it here
 		// Funcs: sprig.FuncMap(),
 	})
@@ -57,6 +65,3 @@ func New(db *bun.DB, isDevelopment bool, templateFS, staticFS embed.FS) *server 
 func (s *server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	s.router.ServeHTTP(w, req)
 }
-
-// Private Functions and Procedures
-// ------------------------------------------------------------------------

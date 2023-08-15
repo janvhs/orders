@@ -1,6 +1,9 @@
 // TODO: Currently, having a service layer feels unnecessary.
 package order
 
+// Interface Abstraction
+// ------------------------------------------------------------------------
+
 type Service interface {
 	ListAll() ([]Order, error)
 }

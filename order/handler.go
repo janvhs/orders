@@ -3,7 +3,7 @@ package order
 import (
 	"net/http"
 
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	"github.com/unrolled/render"
 	"github.com/uptrace/bun"
 )
@@ -13,6 +13,9 @@ func RegisterHandlers(db *bun.DB, render *render.Render) func(r chi.Router) {
 		r.Get("/", handleIndexOrder(db, render))
 	}
 }
+
+// Handlers
+// ------------------------------------------------------------------------
 
 func handleIndexOrder(db *bun.DB, render *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

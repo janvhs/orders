@@ -37,12 +37,17 @@ var (
 	CommitSHA = ""
 )
 
+// TODO: Get rid of this because it is annoying to pass around
+//
 //go:embed web/templates/*.html web/templates/layouts/*.html
 var templateFS embed.FS
 
+// TODO: Get rid of this because it is annoying to pass around
+//
 //go:embed web/static
 var staticFS embed.FS
 
+// FIXME: This currently doesn't work
 func setMetaDefaults() {
 	if info, ok := debug.ReadBuildInfo(); ok {
 		if (Version == defaultVersion || Version == "") && info.Main.Sum != "" {

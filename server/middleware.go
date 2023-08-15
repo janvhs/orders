@@ -1,8 +1,11 @@
 package server
 
 import (
-	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/chi/v5/middleware"
 )
+
+// Add middleware here
+// ------------------------------------------------------------------------
 
 func (s *server) registerMiddleware() {
 	// Give each request a unique ID
