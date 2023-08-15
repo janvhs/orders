@@ -1,6 +1,8 @@
 package server
 
 import (
+	"embed"
+	"io/fs"
 	"net/http"
 
 	"git.bode.fun/orders/order"
@@ -12,17 +14,17 @@ func (s *server) registerHandlers() {
 	})
 	s.router.Route("/order", order.RegisterHandlers(s.db, s.renderer))
 
+	s.router.Get("/static/*", mustRegisterStaticHandler(s.staticFS))
 }
 
-// TODO: Static files but this is not working yet
-// func setUpStaticFileServer(r chi.Router, staticFS embed.FS, isDevelopment bool) {
-// 	var handler http.Handler
+// TODO: Add development mode, where the templates are not embedded
+func mustRegisterStaticHandler(staticFS embed.FS) http.HandlerFunc {
+	staticSubFS, err := fs.Sub(staticFS, "web")
+	if err != nil {
+		panic(err)
+	}
 
-// 	if isDevelopment {
-// 		handler = http.FileServer(http.Dir("web/static"))
-// 	} else {
-// 		handler = http.FileServer(http.FS(staticFS))
-// 	}
-
-// 	r.Get("/static/*", http.StripPrefix("web/static", handler).ServeHTTP)
-// }
+	httpFS := http.FS(staticSubFS)
+	staticHandler := http.StripPrefix("/", http.FileServer(httpFS))
+	return staticHandler.ServeHTTP
+}

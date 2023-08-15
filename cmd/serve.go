@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewServeCommand(logger *log.Logger, templateFS embed.FS) *cobra.Command {
+func NewServeCommand(logger *log.Logger, templateFS, staticFS embed.FS) *cobra.Command {
 	command := &cobra.Command{
 		Use:   "serve",
 		Short: "Start the server",
@@ -43,7 +43,7 @@ func NewServeCommand(logger *log.Logger, templateFS embed.FS) *cobra.Command {
 			}
 
 			addr := fmt.Sprintf("%s:%d", cnf.Server.Host, cnf.Server.Port)
-			handler := server.New(db, cnf.IsDevelopment, templateFS)
+			handler := server.New(db, cnf.IsDevelopment, templateFS, staticFS)
 
 			// TODO: find a good value for the timeouts.
 			// Fixes gosec issue G114

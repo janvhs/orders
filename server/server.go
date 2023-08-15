@@ -16,11 +16,13 @@ type server struct {
 	router        chi.Router
 	renderer      *render.Render
 	db            *bun.DB
+	staticFS      embed.FS
 }
 
-func New(db *bun.DB, isDevelopment bool, templateFS embed.FS) *server {
+func New(db *bun.DB, isDevelopment bool, templateFS, staticFS embed.FS) *server {
 	r := chi.NewRouter()
 
+	// TODO: Remove render, because it seems to be an unnecessary dependency
 	renderer := render.New(render.Options{
 		IsDevelopment: isDevelopment,
 		Layout:        "layouts/index",
@@ -39,6 +41,7 @@ func New(db *bun.DB, isDevelopment bool, templateFS embed.FS) *server {
 		db:            db,
 		isDevelopment: isDevelopment,
 		renderer:      renderer,
+		staticFS:      staticFS,
 	}
 
 	srv.registerMiddleware()

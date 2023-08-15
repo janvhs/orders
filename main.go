@@ -25,6 +25,9 @@ var (
 //go:embed web/templates/*.html web/templates/layouts/*.html
 var templateFS embed.FS
 
+//go:embed web/static
+var staticFS embed.FS
+
 func setMetaDefaults() {
 	if info, ok := debug.ReadBuildInfo(); ok {
 		if (Version == defaultVersion || Version == "") && info.Main.Sum != "" {
@@ -47,7 +50,7 @@ func main() {
 	app := cmd.New(AppName, Version, CommitSHA)
 
 	app.AddCommand(
-		cmd.NewServeCommand(logger, templateFS),
+		cmd.NewServeCommand(logger, templateFS, staticFS),
 		cmd.NewMigrateCommand(),
 	)
 
